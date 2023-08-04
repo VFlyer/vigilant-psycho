@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -123,15 +123,15 @@ public class CaesarPsychoScript : MonoBehaviour {
 
     private string Ctd(string s, int c, int i)
     {
-        if (c < 1)
+        if (c < 1 || (c == 2 && i < 1))
             return s;
         int p = alph.IndexOf(s);
         switch (c)
         {
-            case 1: return alph[(p + 51 - i) % 26].ToString();
+            case 1: return alph[(p + 25 - i) % 26].ToString();
             case 2:
-                int g = i < 1 ? 0 : alph.IndexOf(gaps[i - 1]);
-                return i < 1 ? s : alph[(p + g + 1) % 26].ToString();
+                int g = alph.IndexOf(gaps[i - 1]);
+                return alph[(p + g + 1) % 26].ToString();
             case 3:
                 int l = info.GetSerialNumber()[i] - '9';
                 l = l > 0 ? alph.IndexOf(info.GetSerialNumber()[i]) + 1 : info.GetSerialNumber()[i] - '0';
@@ -144,21 +144,21 @@ public class CaesarPsychoScript : MonoBehaviour {
                 return alph[(p + 26 - (t * d)) % 26].ToString();
             case 5: return alph[25 - p].ToString();
             default:
-                int sum = info.GetSerialNumberNumbers().Sum() + i + 1;
+                int sum = info.GetSerialNumberNumbers().Sum() + 5 - i;
                 return alph[(p + sum) % 26].ToString();
         }
     }
 
     private string Ctk(string s, int c, int i)
     {
-        if (c < 1)
+        if (c < 1 || (c == 2 && i < 1))
             return s;
         int p = alph.IndexOf(s.ToString());
         switch (c)
         {
             case 1: return alph[(p + i + 1) % 26].ToString();
-            case 2: int g = i < 1 ? 0 : alph.IndexOf(submission[i - 1]);
-                return i < 1 ? s : alph[(p + 25 - g) % 26].ToString();
+            case 2: int g = alph.IndexOf(submission[i - 1]);
+                return alph[(p + 25 - g) % 26].ToString();
             case 3: int l = info.GetSerialNumber()[i] - '9';
                 l = l > 0 ? alph.IndexOf(info.GetSerialNumber()[i]) + 1 : info.GetSerialNumber()[i] - '0';
                 return alph[(p + l) % 26].ToString();
@@ -169,7 +169,7 @@ public class CaesarPsychoScript : MonoBehaviour {
                 return alph[(p + 26 + (t * d)) % 26].ToString();
             case 5: return alph[25 - p].ToString();
             default: int sum = info.GetSerialNumberNumbers().Sum() + 6 - i;
-                return alph[(p + 52 - sum) % 26].ToString();
+                return alph[(p + 26 - sum) % 26].ToString();
         }
     }
 
@@ -182,7 +182,7 @@ public class CaesarPsychoScript : MonoBehaviour {
             case 2: word[0] = info.GetOffIndicators().Count() == 1 ? info.GetOffIndicators().First().Last().ToString() : (info.GetOffIndicators().Count() < 1 ? info.GetSerialNumberLetters().Last().ToString() : string.Join("", info.GetIndicators().ToArray()).OrderBy(x => x).Last().ToString()); break;
         }
         word[0] = alph[(alph.IndexOf(word[0]) + strikes) % 26].ToString();
-        //Debug.LogFormat("[Caesar Psycho #{0}] The first letter of the word is {1}.", moduleID, word[0]);
+        Debug.LogFormat("[Caesar Psycho #{0}] The first letter of the word is {1}.", moduleID, word[0]);
         int wselect = (alph.IndexOf(word[0]) * 3) + stage;
         for (int i = 1; i < 6; i++)
         {
@@ -208,14 +208,27 @@ public class CaesarPsychoScript : MonoBehaviour {
                     int k = order[i];
                     r = Random.Range(0, 7);
                     keycol[k] = r;
-                    if(i >= 6 || r != 1)
-                          keyboard[k] = Ctd(i < 6 ? word[i] : alph.PickRandom().ToString(), r, i < 6 ? i : 0);
-                    else
+                    if(i >= 6)
+                          keyboard[k] = Ctd(alph.PickRandom().ToString(), r, Random.Range(0, 6));
+                    else if (r == 2)
                     {
+                        if (i == 0)
+                        {
+                            keyboard[k] = word[0];
+                            continue;
+                        }
                         int p = alph.IndexOf(word[i]);
                         int g = i < 1 ? 0 : alph.IndexOf(word[i - 1]);
-                        keyboard[k] = i < 1 ? word[0] : alph[(p + 25 - g) % 26].ToString();
+                        keyboard[k] = i < 1 ? word[0] : alph[(p + g + 1) % 26].ToString();
                     }
+                    else if(r == 6)
+                    {
+                        int p = alph.IndexOf(word[i]);
+                        int sum = info.GetSerialNumberNumbers().Sum() + 6 - i;
+                        keyboard[k] = alph[(p + sum) % 26].ToString();
+                    }
+                    else
+                        keyboard[k] = Ctd(word[i], r, i);
                     kletters[k].text = keyboard[k];
                     kletters[k].color = cols[r];
                 }
@@ -235,7 +248,7 @@ public class CaesarPsychoScript : MonoBehaviour {
         else
             for (int i = 0; i < 5; i++)
                 dletters[i].text = gaps[i];
-        //Debug.LogFormat("[Caesar Psycho #{0}] The gaps between consecutive letters of the word are: {1}", moduleID, string.Join("-", gaps.Select(x => (alph.IndexOf(x.ToString()) + 1).ToString()).ToArray()));
+        Debug.LogFormat("[Caesar Psycho #{0}] The gaps between consecutive letters of the word are: {1}", moduleID, string.Join("-", gaps.Select(x => (alph.IndexOf(x.ToString()) + 1).ToString()).ToArray()));
         Debug.LogFormat("[Caesar Psycho #{0}] Enter the word \"{1}\".", moduleID, string.Join("", word));
     }
 
@@ -254,5 +267,82 @@ public class CaesarPsychoScript : MonoBehaviour {
         yield return null;
         strcheck = false;
         strgate = false;
+    }
+#pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} <ABCDEF> [Presses keys in the inputs' positions on a QWERTY keyboard.] | !{0} cancel | !{0} submit";
+#pragma warning restore 414
+
+    private IEnumerator ProcessTwitchCommand(string command)
+    {
+        command = command.ToLowerInvariant();
+        if(command == "cancel")
+        {
+            yield return null;
+            keys[26].OnInteract();
+        }
+        else if(command == "submit")
+        {
+            if(entry < 6)
+            {
+                yield return "sendtochaterror!f Entry cannot be submitted it contains the maximum number of characters.";
+                yield break;
+            }
+            yield return null;
+            keys[27].OnInteract();
+        }
+        else
+        {
+            if(entry > 5)
+            {
+                yield return "sendtochaterror!f Entry already contains the maximum number of characters.";
+                yield break;
+            }
+            string qwerty = "qwertyuiopasdfghjklzxcvbnm";
+            List<int> p = new List<int> { };
+            for (int i = 0; i < command.Length; i++)
+            {
+                if (entry + i > 5)
+                    break;
+                p.Add(qwerty.IndexOf(command[i].ToString()));
+                if(p[i] < 0)
+                {
+                    yield return "sendtochaterror!f \"" + p[i] + "\" is not a valid key.";
+                    yield break;
+                }
+            }
+            for(int i = 0; i < p.Count(); i++)
+            {
+                yield return new WaitForSeconds(0.1f);
+                keys[p[i]].OnInteract();
+            }
+        }
+    }
+
+    private IEnumerator TwitchHandleForcedSolve()
+    {
+        if(entry > 0)
+        {
+            yield return null;
+            keys[26].OnInteract();
+        }
+        while (!moduleSolved)
+        {
+            yield return true;
+            while (entry < 6)
+            {
+                for (int i = 0; i < 26; i++)
+                {
+                    if (Ctk(keyboard[i], keycol[i], entry) == word[entry])
+                    {
+                        yield return null;
+                        keys[i].OnInteract();
+                        break;
+                    }
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return null;
+            keys[27].OnInteract();
+        }
     }
 }
