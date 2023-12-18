@@ -31,3 +31,6 @@ sysinfo.txt
 Assets/Generated
 Gen
 
+steam_api64.dll
+steam_appid.txt
+UnityPackageManager/manifest.json
