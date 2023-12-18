@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: WorkshopItem
   m_EditorClassIdentifier: 
   WorkshopPublishedFileID: 0
-  Title: Caesar Psycho
-  Tags: []
+  Title: Vigiliant Psycho
+  Tags:
+  - Regular Module
