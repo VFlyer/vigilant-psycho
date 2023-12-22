@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: WorkshopItem
   m_EditorClassIdentifier: 
   WorkshopPublishedFileID: 0
-  Title: Vigiliant Psycho
+  Title: Vigilant Psycho
   Tags:
   - Regular Module

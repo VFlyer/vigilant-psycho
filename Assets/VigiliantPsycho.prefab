@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 114526327195350006}
   - component: {fileID: 114323408190186160}
   - component: {fileID: 114659127101180604}
+  - component: {fileID: 114105664486529926}
   m_Layer: 0
   m_Name: VigiliantPsycho
   m_TagString: Untagged
@@ -9413,6 +9414,95 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - KT/Mobile/DiffuseTint
+--- !u!114 &114105664486529926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1230880001740248}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6965ef2d67f8a4b8a5c24275038d6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomlyRotateText: 0
+  randomlyResizeText: 1
+  randomlyRotateObjects: 0
+  mixTextures: 1
+  offsetTextures: 1
+  rescaleTextures: 1
+  randomOffset: {x: 0, y: 360, z: 0}
+  intensity: 0
+  affectedTransforms:
+  - {fileID: 4566105413581020}
+  - {fileID: 4596984863614028}
+  - {fileID: 4306992542293858}
+  - {fileID: 4483115033697236}
+  - {fileID: 4889829337849358}
+  - {fileID: 4686250832846470}
+  - {fileID: 4949064056451976}
+  - {fileID: 4388078371284552}
+  - {fileID: 4085234976077680}
+  - {fileID: 4240054324546826}
+  - {fileID: 4456632830326868}
+  - {fileID: 4529640627495954}
+  - {fileID: 4655560074545732}
+  - {fileID: 4621985688675066}
+  - {fileID: 4003523590221952}
+  - {fileID: 4211630380859372}
+  - {fileID: 4274127822707996}
+  - {fileID: 4699024472291894}
+  - {fileID: 4982525368961936}
+  - {fileID: 4107565707135220}
+  - {fileID: 4011578601074766}
+  - {fileID: 4336013820755434}
+  - {fileID: 4913081927527372}
+  - {fileID: 4383139629907030}
+  - {fileID: 4802719260629388}
+  - {fileID: 4469485413554850}
+  - {fileID: 4122963177693718}
+  affectedTextMeshes:
+  - {fileID: 102108177219076930}
+  - {fileID: 102138538548307242}
+  - {fileID: 102145506772086896}
+  - {fileID: 102993120339303992}
+  - {fileID: 102651009771819956}
+  - {fileID: 102581606829302050}
+  - {fileID: 102413272960928384}
+  - {fileID: 102846700114577804}
+  - {fileID: 102046685571400320}
+  - {fileID: 102810539503494326}
+  - {fileID: 102357523039259598}
+  - {fileID: 102799402745799656}
+  - {fileID: 102340270803110048}
+  - {fileID: 102521337361948186}
+  - {fileID: 102529490157815090}
+  - {fileID: 102936654616952692}
+  - {fileID: 102158792435764266}
+  - {fileID: 102213374362673734}
+  - {fileID: 102461132918108068}
+  - {fileID: 102873259954180664}
+  - {fileID: 102622016362406938}
+  - {fileID: 102119328270470646}
+  - {fileID: 102354028220226474}
+  - {fileID: 102819503306435798}
+  - {fileID: 102512254984487748}
+  - {fileID: 102369780342427740}
+  - {fileID: 102522017899121868}
+  - {fileID: 102662413694441568}
+  - {fileID: 102787142114218728}
+  - {fileID: 102617601417162938}
+  - {fileID: 102907521938523648}
+  - {fileID: 102403297047079978}
+  - {fileID: 102751251402515170}
+  - {fileID: 102059595235617792}
+  - {fileID: 102127865577587218}
+  - {fileID: 102396819276423546}
+  - {fileID: 102319331611666178}
+  affectedRenderers:
+  - {fileID: 23751659236150332}
+  alternativeTextures:
+  - {fileID: 2800000, guid: d50679f4bd0c9714a9d956a6c19552ba, type: 3}
 --- !u!114 &114115004676836994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10523,8 +10613,8 @@ MonoBehaviour:
   m_Script: {fileID: -119419473, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModuleType: vigiliantPsycho
-  ModuleDisplayName: Vigiliant Psycho
+  ModuleType: vigilantPsycho
+  ModuleDisplayName: Vigilant Psycho
   RequiresTimerVisibility: 0
 --- !u!114 &114531813441322572
 MonoBehaviour:
@@ -10829,6 +10919,7 @@ MonoBehaviour:
   - {fileID: 102819503306435798}
   - {fileID: 102512254984487748}
   - {fileID: 102369780342427740}
+  submitTxt: {fileID: 102725561970368510}
   statusRenderers:
   - {fileID: 23682405036258650}
   - {fileID: 23200482036183072}
@@ -10864,6 +10955,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 457d9a3563b3980459b24b3c18890c85, type: 2}
   - {fileID: 2100000, guid: b358065471a34ef4fb7dae34d5c894d1, type: 2}
   - {fileID: 2100000, guid: 83bd9dc4178ef5b4cad64f495014cdd7, type: 2}
+  messerScript: {fileID: 114105664486529926}
 --- !u!114 &114664790390020966
 MonoBehaviour:
   m_ObjectHideFlags: 1

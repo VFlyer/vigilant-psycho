@@ -217,6 +217,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1230880001740248, guid: 32607fd1779a570468954f969f242cb2, type: 2}
+      propertyPath: m_Name
+      value: VigilantPsycho
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32607fd1779a570468954f969f242cb2, type: 2}
   m_IsPrefabParent: 0
@@ -348,7 +352,7 @@ Prefab:
     - target: {fileID: 114617884380056244, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 102613506082432776, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
@@ -407,6 +411,11 @@ Prefab:
         type: 2}
       propertyPath: TwitchPlaysMode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
+        type: 2}
+      propertyPath: AudioVolume
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
