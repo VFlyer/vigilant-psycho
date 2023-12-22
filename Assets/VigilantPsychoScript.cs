@@ -375,7 +375,7 @@ public class VigilantPsychoScript : MonoBehaviour {
 		if (completedStages >= 2)
         {
 			timer.Stop();
-			timer.Reset();
+			//timer.Reset();
 			StartCoroutine(HandleStage3Transition(true, true));
 			return;
         }
