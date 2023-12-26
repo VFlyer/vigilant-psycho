@@ -171,6 +171,15 @@ public class VigilantPsychoScript : MonoBehaviour {
 					var pickedIdxExclude = possibleTransformsKeyboard[idxKeyboard1stLetter].PickRandom(); // Also pick a manditory colour to remove.
 					possibleTransformsKeyboard[idxKeyboard1stLetter].Remove(pickedIdxExclude);
 					idxColourLetter = pickedIdxExclude;
+					// TP Handling to make the module easier.
+					if (TwitchPlaysActive)
+                    {
+						for (var x = 0; x < possibleTransformsKeyboard.Length; x++)
+						{
+							possibleTransformsKeyboard[x].Sort();
+							curIdxTransformKeyboard[x] = Random.Range(0, possibleTransformsKeyboard[x].Count);
+						}
+					}
 					// Generate a binary corresponding to each value, apply the condition corresponding to the binary string.
 					var binary = "";
 					for (var x = 0; x < 7; x++)
@@ -649,7 +658,8 @@ public class VigilantPsychoScript : MonoBehaviour {
 		return output;
 	}
 #pragma warning disable 414
-	private readonly string TwitchHelpMessage = "\"!{0} <ABCDEF>\" [Presses keys in the inputs' positions on a QWERTY keyboard, with * to press submit, and \"-\" to press the clear button. Prepend \"~slowpress\", \"~slowerpress\", \"~fastpress\" to adjust the speed of the buttons being pressed.]";
+	bool TwitchPlaysActive;
+	private readonly string TwitchHelpMessage = "\"!{0} <ABCDEF>\" [Presses keys in the inputs' positions on a QWERTY keyboard, with \"*\" to submit, and \"-\" to press the red button. Prepend \"~slowpress\", \"~slowerpress\", \"~fastpress\", or \"~fasterpress\" to adjust the speed of the buttons being pressed.] | On Twitch Plays, the keyboard scramble for stage 3 has been altered to be more consistent.";
 #pragma warning restore 414
 	IEnumerator ProcessTwitchCommand(string command)
     {
@@ -659,7 +669,7 @@ public class VigilantPsychoScript : MonoBehaviour {
 			yield break;
         }
 		var intCmd = command.ToLowerInvariant();
-		var rgxMatchPressAdjust = Regex.Match(command, @"^~(slow(er)|fast)press\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+		var rgxMatchPressAdjust = Regex.Match(command, @"^~(slow|fast)(er)?press\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 		var curPressDelay = 0.1f;
 		if (rgxMatchPressAdjust.Success)
         {
@@ -675,6 +685,9 @@ public class VigilantPsychoScript : MonoBehaviour {
 					break;
 				case "~fastpress":
 					curPressDelay = 0.05f;
+					break;
+				case "~fasterpress":
+					curPressDelay = 0.01f;
 					break;
             }
         }

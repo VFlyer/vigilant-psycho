@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: VigilantPsychoMod
   title: Vigilant Psycho
-  author: Speakingevil
+  author: Speakingevil, VFlyer
   description: '[i]Is the name misspelt this way to prepare for the wrath that is
     about to come?[/i]
 
@@ -23,6 +23,6 @@ MonoBehaviour:
     need to do this module fast.
 
 '
-  version: 1.0
+  version: 1.0.01
   outputFolder: build
   previewImage: {fileID: 2800000, guid: ebb864af6b390ee449b348e94d75fe94, type: 3}
