@@ -149,7 +149,7 @@ public class VigilantPsychoScript : MonoBehaviour {
 				goto default;
 			case 2:
 				{
-					colorIdxSubCycle.Clear();
+					var originalWord = pickedWord;
 					decodedWords.Add(pickedWord.ToString());
 					// Display Transforms for Stage 3.
 					for (var x = 0; x < 5; x++)
@@ -180,10 +180,12 @@ public class VigilantPsychoScript : MonoBehaviour {
 							curIdxTransformKeyboard[x] = Random.Range(0, possibleTransformsKeyboard[x].Count);
 						}
 					}
+					//retryBinary:
 					// Generate a binary corresponding to each value, apply the condition corresponding to the binary string.
 					var binary = "";
 					for (var x = 0; x < 7; x++)
 						binary += Random.value < 0.5f ? "0" : "1";
+					colorIdxSubCycle.Clear();
 					colorIdxSubCycle.AddRange(Enumerable.Range(0, 14).Select(a => a % 2 == 0 ? (binary[a / 2] == '1' ? 1 : 0) : 2));
 					colorIdxSubCycle.AddRange(Enumerable.Repeat(2, 5));
 					var initialColourIdx = ((int)DateTime.Now.DayOfWeek + bombInfo.GetStrikes() + bombInfo.GetIndicators().Count()) % 7;
@@ -223,7 +225,7 @@ public class VigilantPsychoScript : MonoBehaviour {
 						else if (shiftedBinaries.Any(a => a.SequenceEqual("0100111") || a.SequenceEqual("1011000") || a.SequenceEqual("0001101") || a.SequenceEqual("1110010")))
                         {
 							var shiftAmountMin = Enumerable.Range(0, 7).Where(a => shiftedBinaries[a].SequenceEqual("0100111") || shiftedBinaries[a].SequenceEqual("1011000") || shiftedBinaries[a].SequenceEqual("0001101") || shiftedBinaries[a].SequenceEqual("1110010")).Min();
-							conditionReason = string.Format("By shifting the binary to the left {0} time(s), any one of these two following sequences can be formed: \"ABAABBB\", \"AAABBAB\"", shiftAmountMin);
+							conditionReason = string.Format("By shifting the binary to the left {0} time(s), any one of these two following sequences can be formed: ABAABBB, AAABBAB", shiftAmountMin);
 							idxForbidTransformStg3 = (initialColourIdx + shiftAmountMin * 6) % 7;
 						}
 						else if (binary.Count(a => a == '0') == 2)
@@ -242,11 +244,21 @@ public class VigilantPsychoScript : MonoBehaviour {
 						}
 						else
                         {
-							conditionReason = string.Format("No other conditions apply, binary can be shifted to form the sequence \"ABBABBA\".");
+							conditionReason = string.Format("No other conditions apply, binary can be shifted to form the sequence ABBABBA.");
 							var idxValidSequence = Enumerable.Range(0, 7).Single(a => shiftedBinaries[a].SequenceEqual("0110011") || shiftedBinaries[a].SequenceEqual("1001100"));
 							idxForbidTransformStg3 = idxValidSequence;
                         }
 					}
+					var layoutCombinations = GetLayoutPossibleCombinations(originalWord, curAlphabet);
+					QuickLogDebug("[{0}]", layoutCombinations.Select(a => Enumerable.Range(0, a.letters.Count).Select(b => string.Format("{0}({1})", a.letters[b], a.idxEncodes[b])).Join("")).Join("],["));
+					var possibleSolution = false;
+					var requiredLetters = lettersRequiredFromColour[idxColourLetter];
+					for (var x = 0; x < layoutCombinations.Count; x++)
+                        for (var y = 0; y < layoutCombinations[x].idxEncodes.Count; y++)
+							possibleSolution |= layoutCombinations[x].idxEncodes[y] != idxForbidTransformStg3 && requiredLetters.Contains(layoutCombinations[x].letters[y]);
+					if (!possibleSolution)
+						QuickLogDebug("Potentially not possible. Oops.");
+					//	goto retryBinary;
 				}
 				break;
         }
@@ -257,6 +269,8 @@ public class VigilantPsychoScript : MonoBehaviour {
 			var idxNextLetter = curAlphabet.IndexOf(pickedWord[x + 1]);
 			distancesBetweenWords[x] = idxFirstLetter > idxNextLetter ? 26 + (idxNextLetter - idxFirstLetter) : idxNextLetter - idxFirstLetter;
         }
+		if (idxStage == 2)
+			QuickLog("Timer activated.");
 		QuickLog("The alphabet used on this stage is {0}", curAlphabet);
 		QuickLog("The decoded word is {0}", decodedWords.Last());
 		if (idxStage < 2)
@@ -395,7 +409,6 @@ public class VigilantPsychoScript : MonoBehaviour {
 			completedStages++;
 			if (completedStages >= 2)
             {
-				QuickLog("On stage 3? Alright. Here we go... The timer will be against you.");
 				StartCoroutine(HandleStage3Transition());
             }
 			else
